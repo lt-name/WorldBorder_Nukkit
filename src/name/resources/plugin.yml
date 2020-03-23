@@ -1,0 +1,17 @@
+name: Boundary
+main: name.boundary.boundary
+version: "1.0.0"
+api:
+  - 1.0.0
+load: POSTWORLD
+author: lt_name
+
+commands:
+  boundary:
+    description: 边界设置
+    usage: /boundary
+    permission: boundary.op
+permissions:
+  boundary.op:
+    description: ""
+    default: op
