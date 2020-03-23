@@ -1,17 +1,19 @@
-name: Boundary
-main: name.boundary.boundary
-version: "1.0.0"
+name: WorldBoundary
+main: name.WorldBoundary.WorldBoundary
+version: "1.0.1"
 api:
   - 1.0.0
 load: POSTWORLD
 author: lt_name
+loadbefore:
+  - AutoUpData
 
 commands:
   boundary:
     description: 边界设置
     usage: /boundary
-    permission: boundary.op
+    permission: WorldBoundary.op
 permissions:
-  boundary.op:
+  WorldBoundary.op:
     description: ""
     default: op

@@ -1,4 +1,4 @@
-package name.boundary;
+package name.WorldBoundary;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
@@ -10,10 +10,11 @@ import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.level.Level;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
+import updata.AutoData;
 
 import java.util.LinkedHashMap;
 
-public class boundary extends PluginBase implements Listener {
+public class WorldBoundary extends PluginBase implements Listener {
 
     private LinkedHashMap<Level, LinkedHashMap<String, Integer>> levels = new LinkedHashMap<Level, LinkedHashMap<String, Integer>>();
     private LinkedHashMap<Level, LinkedHashMap<String, Integer>> cache = new LinkedHashMap<Level, LinkedHashMap<String, Integer>>();
@@ -21,6 +22,12 @@ public class boundary extends PluginBase implements Listener {
 
     @Override
     public void onEnable() {
+        if (getServer().getPluginManager().getPlugin("AutoUpData") != null) {
+            getLogger().info("§e 检查更新中...");
+            if (AutoData.defaultUpData(this, getFile(), "lt-name", "WorldBoundary_Nukkit")) {
+                return;
+            }
+        }
         saveDefaultConfig();
         this.config = getConfig();
         for (String key : this.config.getAll().keySet()) {
@@ -96,6 +103,7 @@ public class boundary extends PluginBase implements Listener {
         if (event.isCancelled()) { return; }
         Player player = event.getPlayer();
         if (player != null) {
+            if (getServer().isOp(player.getName())) { return; }
             if (this.levels.containsKey(player.getLevel())) {
                 int x = player.getFloorX();
                 int z = player.getFloorZ();
