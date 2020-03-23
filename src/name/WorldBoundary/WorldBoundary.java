@@ -133,8 +133,8 @@ public class WorldBoundary extends PluginBase implements Listener {
                 int z1 = this.levels.get(level).get("z1");
                 int x2 = this.levels.get(level).get("x2");
                 int z2 = this.levels.get(level).get("z2");
-                if ((x<x1 || x<x2) && (x>x2 || x>x1) &&
-                        (z<z1 || z<z2) && (z>z2 || z>z1)) {
+                if ((x < x1 || x < x2) && (x > x2 || x > x1) &&
+                        (z < z1 || z < z2) && (z > z2 || z > z1)) {
                     return;
                 }
                 event.getPlayer().sendMessage("§e >> §c 请勿传送到规定范围外！");
