@@ -1,12 +1,10 @@
 name: WorldBoundary
-main: name.WorldBoundary.WorldBoundary
-version: "1.0.1"
+main: cn.lanink.worldboundary.WorldBoundary
+version: "1.0.2"
 api:
   - 1.0.0
 load: POSTWORLD
-author: lt_name
-loadbefore:
-  - AutoUpData
+author: "lt_name"
 
 commands:
   boundary:
