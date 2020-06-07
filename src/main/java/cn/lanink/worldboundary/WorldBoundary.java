@@ -29,7 +29,14 @@ public class WorldBoundary extends PluginBase implements Listener {
         saveDefaultConfig();
         this.config = getConfig();
         for (String key : this.config.getAll().keySet()) {
-            LinkedHashMap pos = (LinkedHashMap)config.get(key);
+            if (getServer().getLevelByName(key) == null) {
+                getServer().loadLevel(key);
+            }
+            //再没有就是已经删除那个世界了
+            if (getServer().getLevelByName(key) == null) {
+                break;
+            }
+            LinkedHashMap<String, Integer> pos = config.get(key, new LinkedHashMap<>());
             this.levels.put(getServer().getLevelByName(key), pos);
         }
         getServer().getPluginManager().registerEvents(this, this);
