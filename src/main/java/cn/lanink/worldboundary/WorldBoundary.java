@@ -16,12 +16,12 @@ import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.Task;
 import cn.nukkit.utils.Config;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 
 public class WorldBoundary extends PluginBase implements Listener {
 
-    private LinkedHashMap<Level, LinkedHashMap<String, Integer>> levels = new LinkedHashMap<>();
-    private LinkedHashMap<Level, LinkedHashMap<String, Integer>> cache = new LinkedHashMap<>();
+    private final HashMap<Level, HashMap<String, Integer>> levels = new HashMap<>();
+    private final HashMap<Level, HashMap<String, Integer>> cache = new HashMap<>();
     private Config config;
 
     @Override
@@ -29,14 +29,10 @@ public class WorldBoundary extends PluginBase implements Listener {
         saveDefaultConfig();
         this.config = getConfig();
         for (String key : this.config.getAll().keySet()) {
-            if (getServer().getLevelByName(key) == null) {
-                getServer().loadLevel(key);
+            if (getServer().getLevelByName(key) == null && !getServer().loadLevel(key)) {
+                continue;
             }
-            //再没有就是已经删除那个世界了
-            if (getServer().getLevelByName(key) == null) {
-                break;
-            }
-            LinkedHashMap<String, Integer> pos = config.get(key, new LinkedHashMap<>());
+            HashMap<String, Integer> pos = config.get(key, new HashMap<>());
             this.levels.put(getServer().getLevelByName(key), pos);
         }
         getServer().getPluginManager().registerEvents(this, this);
@@ -46,10 +42,8 @@ public class WorldBoundary extends PluginBase implements Listener {
 
     @Override
     public void onDisable() {
-        for (Level level : levels.keySet()) {
-            this.config.set(level.getName(), this.levels.get(level));
-            this.config.save();
-        }
+        this.cache.clear();
+        this.levels.clear();
         getLogger().info("§c 插件已卸载！");
     }
 
@@ -63,7 +57,7 @@ public class WorldBoundary extends PluginBase implements Listener {
                         switch (args[0]) {
                             case "pos1": case "点一":
                                 if (!this.cache.containsKey(player.getLevel())) {
-                                    this.cache.put(player.getLevel(), new LinkedHashMap<>());
+                                    this.cache.put(player.getLevel(), new HashMap<>());
                                 }
                                 this.cache.get(player.getLevel()).put("x1", player.getFloorX());
                                 this.cache.get(player.getLevel()).put("z1", player.getFloorZ());
@@ -71,7 +65,7 @@ public class WorldBoundary extends PluginBase implements Listener {
                                 break;
                             case "pos2": case "点二":
                                 if (!this.cache.containsKey(player.getLevel())) {
-                                    this.cache.put(player.getLevel(), new LinkedHashMap<>());
+                                    this.cache.put(player.getLevel(), new HashMap<>());
                                 }
                                 this.cache.get(player.getLevel()).put("x2", player.getFloorX());
                                 this.cache.get(player.getLevel()).put("z2", player.getFloorZ());
@@ -79,7 +73,7 @@ public class WorldBoundary extends PluginBase implements Listener {
                                 break;
                             case "reload": case "重载":
                                 if (this.cache.containsKey(player.getLevel())) {
-                                    LinkedHashMap<String, Integer> pos = this.cache.get(player.getLevel());
+                                    HashMap<String, Integer> pos = this.cache.get(player.getLevel());
                                     if (pos.get("x1") == null || pos.get("z1") == null ||
                                             pos.get("x2") == null || pos.get("z2") == null) {
                                         sender.sendMessage("§c当前世界还未设置完！");
@@ -122,7 +116,7 @@ public class WorldBoundary extends PluginBase implements Listener {
         if (player == null || player.isOp()) {
             return;
         }
-        LinkedHashMap<String, Integer> pos = this.levels.getOrDefault(player.getLevel(), null);
+        HashMap<String, Integer> pos = this.levels.get(player.getLevel());
         Location location = event.getTo();
         if (pos == null || location == null) {
             return;
