@@ -29,10 +29,11 @@ jobs:
           java-version: 1.8
       - name: Build with Maven
         run: mvn -B -U clean package --file pom.xml
+      - name: Copy artifacts
+        run: mkdir staging && cp target/*.jar staging
       - name: Archive artifacts
-        uses: actions/upload-artifact@v1
-        if: success()
+      - uses: actions/upload-artifact@v1
         with:
-          name: WorldBorder-SNAPSHOT
-          path: target/*.jar
+          name: UhcChampion-SNAPSHOT
+          path: staging
 
