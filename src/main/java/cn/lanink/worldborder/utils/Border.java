@@ -3,6 +3,9 @@ package cn.lanink.worldborder.utils;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.Vector3;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * @author lt_name
  */
@@ -51,6 +54,20 @@ public class Border {
 
     public double getMaxZ() {
         return this.maxZ;
+    }
+
+    /**
+     * 获取保存配置用map
+     *
+     * @return map
+     */
+    public Map<String, Double> getSaveMap() {
+        LinkedHashMap<String, Double> map = new LinkedHashMap<>();
+        map.put("minX", this.getMinX());
+        map.put("maxX", this.getMaxX());
+        map.put("minZ", this.getMinZ());
+        map.put("maxZ", this.getMaxZ());
+        return map;
     }
 
 }
