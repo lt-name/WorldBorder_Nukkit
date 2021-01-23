@@ -1,8 +1,8 @@
-package cn.lanink.worldboundary;
+package cn.lanink.worldborder;
 
-import cn.lanink.worldboundary.entity.EntityText;
-import cn.lanink.worldboundary.ui.UiCreate;
-import cn.lanink.worldboundary.ui.UiListener;
+import cn.lanink.worldborder.entity.EntityText;
+import cn.lanink.worldborder.ui.UiCreate;
+import cn.lanink.worldborder.ui.UiListener;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -18,7 +18,7 @@ import cn.nukkit.utils.Config;
 
 import java.util.HashMap;
 
-public class WorldBoundary extends PluginBase implements Listener {
+public class WorldBorder extends PluginBase implements Listener {
 
     private final HashMap<Level, HashMap<String, Integer>> levels = new HashMap<>();
     private final HashMap<Level, HashMap<String, Integer>> cache = new HashMap<>();

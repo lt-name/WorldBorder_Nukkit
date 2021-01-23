@@ -1,4 +1,4 @@
-package cn.lanink.worldboundary.entity;
+package cn.lanink.worldborder.entity;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;

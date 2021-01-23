@@ -1,8 +1,7 @@
 name: WorldBoundary
-main: cn.lanink.worldboundary.WorldBoundary
+main: cn.lanink.worldborder.WorldBoundary
 version: "1.0.3"
-api:
-  - 1.0.0
+api: ["1.0.0"]
 load: POSTWORLD
 author: "lt_name"
 
@@ -10,8 +9,8 @@ commands:
   boundary:
     description: 边界设置
     usage: /boundary
-    permission: WorldBoundary.op
+    permission: worldborder.op
 permissions:
-  WorldBoundary.op:
+  worldboundary.op:
     description: ""
     default: op

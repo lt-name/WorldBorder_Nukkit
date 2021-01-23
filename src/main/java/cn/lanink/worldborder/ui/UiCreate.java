@@ -1,4 +1,4 @@
-package cn.lanink.worldboundary.ui;
+package cn.lanink.worldborder.ui;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.element.ElementButton;
