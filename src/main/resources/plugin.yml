@@ -1,5 +1,5 @@
-name: WorldBoundary
-main: cn.lanink.worldborder.WorldBoundary
+name: WorldBorder
+main: cn.lanink.worldborder.WorldBorder
 version: "1.0.3"
 api: ["1.0.0"]
 load: POSTWORLD
