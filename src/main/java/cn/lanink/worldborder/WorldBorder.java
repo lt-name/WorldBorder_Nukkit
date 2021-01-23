@@ -1,5 +1,6 @@
 package cn.lanink.worldborder;
 
+import cn.lanink.worldborder.entity.EntityText;
 import cn.lanink.worldborder.ui.UiCreate;
 import cn.lanink.worldborder.ui.UiListener;
 import cn.lanink.worldborder.utils.Border;
@@ -11,16 +12,21 @@ import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author lt_name
+ */
 public class WorldBorder extends PluginBase {
 
     private static WorldBorder instance;
     private Config config;
-    private final ConcurrentHashMap<Level, Border> borders = new ConcurrentHashMap<>();
-    private final HashMap<Level, HashMap<String, Double>> cache = new HashMap<>();
+    private final Map<Level, Border> borders = new ConcurrentHashMap<>();
+    private final Map<Level, HashMap<String, Double>> cache = new HashMap<>();
+    private final Map<Player, EntityText> entityTexts = new HashMap<>();
 
-    public WorldBorder getInstance() {
+    public static WorldBorder getInstance() {
         return instance;
     }
 
@@ -120,8 +126,12 @@ public class WorldBorder extends PluginBase {
         return false;
     }
 
-    public ConcurrentHashMap<Level, Border> getBorders() {
+    public Map<Level, Border> getBorders() {
         return this.borders;
+    }
+
+    public Map<Player, EntityText> getEntityTexts() {
+        return this.entityTexts;
     }
 
 }

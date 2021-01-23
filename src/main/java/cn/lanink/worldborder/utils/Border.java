@@ -33,6 +33,10 @@ public class Border {
                 vector3.z < this.minZ || vector3.z > this.maxZ;
     }
 
+    public Level getLevel() {
+        return this.level;
+    }
+
     public double getMinX() {
         return this.minX;
     }

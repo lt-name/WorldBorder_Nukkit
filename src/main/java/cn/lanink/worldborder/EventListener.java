@@ -32,10 +32,15 @@ public class EventListener implements Listener {
         if (border != null && border.isOutside(event.getTo())) {
             event.setCancelled(true);
             player.sendActionBar("§c请在规定范围内活动！");
-            EntityText text = new EntityText(player.getChunk(), EntityText.getDefaultNBT(player), player);
-            text.spawnTo(player);
-            Server.getInstance().getScheduler().scheduleDelayedTask(this.worldBorder, text::close, 40);
-
+            EntityText entityText = this.worldBorder.getEntityTexts().get(player);
+            if (entityText == null) {
+                EntityText text = new EntityText(player.getChunk(), EntityText.getDefaultNBT(player), player, 5);
+                text.spawnTo(player);
+                this.worldBorder.getEntityTexts().put(player, text);
+            }else {
+                entityText.resetSurvivalTime();
+                entityText.setPosition(player.clone().add(0, 1, 0));
+            }
         }
     }
 
