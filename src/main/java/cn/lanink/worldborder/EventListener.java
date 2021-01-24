@@ -3,7 +3,6 @@ package cn.lanink.worldborder;
 import cn.lanink.worldborder.entity.EntityText;
 import cn.lanink.worldborder.utils.Border;
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerMoveEvent;

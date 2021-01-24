@@ -36,6 +36,42 @@ public class Border {
                 vector3.z < this.minZ || vector3.z > this.maxZ;
     }
 
+    /**
+     * 获取弹回的移动参数
+     *
+     * @param vector3 位置
+     * @return 移动参数
+     */
+    public Vector3 getReboundMotion(Vector3 vector3) {
+        Vector3 motion = null;
+        if (vector3.x < this.minX) {
+            motion = new Vector3(this.minX - vector3.x, 0, 0);
+        }else if (vector3.x > this.maxX) {
+            motion = new Vector3(this.maxX - vector3.x, 0, 0);
+        }else if (vector3.z < this.minZ) {
+            motion = new Vector3(0, 0, this.minZ - vector3.z);
+        }else if (vector3.z > this.maxZ) {
+            motion = new Vector3(0, 0, this.maxZ - vector3.z);
+        }
+        if (motion != null) {
+            if (motion.getX() != 0) {
+                if (Math.abs(motion.getX()) < 0.5) {
+                    motion.x *= 2;
+                }else if (Math.abs(motion.getX()) > 2) {
+                    motion.x /= 4;
+                }
+            }
+            if (motion.getZ() != 0) {
+                if (Math.abs(motion.getZ()) < 0.5) {
+                    motion.z *= 2;
+                }else if (Math.abs(motion.getZ()) > 2) {
+                    motion.z /= 4;
+                }
+            }
+        }
+        return motion;
+    }
+
     public Level getLevel() {
         return this.level;
     }
