@@ -1,4 +1,4 @@
-package cn.lanink.worldborder.ui;
+package cn.lanink.worldborder.form;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -7,7 +7,7 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerFormRespondedEvent;
 import cn.nukkit.form.window.FormWindowSimple;
 
-public class UiListener implements Listener {
+public class WindowListener implements Listener {
 
     @EventHandler
     public void onResponded(PlayerFormRespondedEvent event) {
@@ -16,7 +16,7 @@ public class UiListener implements Listener {
             return;
         }
         if (event.getWindow() instanceof FormWindowSimple) {
-            if (event.getFormID() == UiCreate.ADMIN_MENU) {
+            if (event.getFormID() == WindowCreate.ADMIN_MENU) {
                 FormWindowSimple simple = (FormWindowSimple) event.getWindow();
                 switch (simple.getResponse().getClickedButtonId()) {
                     case 0:
@@ -26,6 +26,9 @@ public class UiListener implements Listener {
                         Server.getInstance().dispatchCommand(player, "worldborder pos2");
                         break;
                     case 2:
+                        Server.getInstance().dispatchCommand(player, "worldborder delete");
+                        break;
+                    case 3:
                         Server.getInstance().dispatchCommand(player, "worldborder reload");
                         break;
                 }

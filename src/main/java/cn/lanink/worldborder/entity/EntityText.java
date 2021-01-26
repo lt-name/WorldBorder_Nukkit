@@ -41,7 +41,7 @@ public class EntityText extends Entity {
         this.setNameTagVisible(true);
         this.setNameTagAlwaysVisible(true);
         this.setNameTag("§e╭───────────────╮\n" +
-                        "§e|§c请在规定范围内活动§e |\n" +
+                        "§e|§c请在世界边界内活动§e |\n" +
                         "§e╰───────────────╯");
         this.setPosition(new Vector3(player.x, player.y + 1, player.z));
     }

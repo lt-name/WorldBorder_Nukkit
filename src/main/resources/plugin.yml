@@ -1,16 +1,11 @@
 name: WorldBorder
 main: cn.lanink.worldborder.WorldBorder
-version: "1.0.3"
+version: "1.1.0"
 api: ["1.0.0"]
 load: POSTWORLD
 author: "lt_name"
 
-commands:
-  worldborder:
-    description: 边界设置
-    usage: /worldborder help
-    permission: worldborder.op
 permissions:
-  worldborder.op:
+  worldborder.admin:
     description: ""
     default: op
