@@ -1,4 +1,4 @@
-# WorldBoundary  
+# WorldBorder  
 #### 功能：  
 限制玩家在某地图活动范围  
 可在每个地图设置单独的范围  
