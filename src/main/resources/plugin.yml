@@ -6,11 +6,11 @@ load: POSTWORLD
 author: "lt_name"
 
 commands:
-  boundary:
+  worldborder:
     description: 边界设置
-    usage: /boundary
+    usage: /worldborder help
     permission: worldborder.op
 permissions:
-  worldboundary.op:
+  worldborder.op:
     description: ""
     default: op

@@ -20,13 +20,13 @@ public class UiListener implements Listener {
                 FormWindowSimple simple = (FormWindowSimple) event.getWindow();
                 switch (simple.getResponse().getClickedButtonId()) {
                     case 0:
-                        Server.getInstance().dispatchCommand(player, "boundary pos1");
+                        Server.getInstance().dispatchCommand(player, "worldborder pos1");
                         break;
                     case 1:
-                        Server.getInstance().dispatchCommand(player, "boundary pos2");
+                        Server.getInstance().dispatchCommand(player, "worldborder pos2");
                         break;
                     case 2:
-                        Server.getInstance().dispatchCommand(player, "boundary reload");
+                        Server.getInstance().dispatchCommand(player, "worldborder reload");
                         break;
                 }
             }

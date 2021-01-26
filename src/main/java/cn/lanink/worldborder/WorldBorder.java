@@ -53,6 +53,8 @@ public class WorldBorder extends PluginBase {
         }
         this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
         this.getServer().getPluginManager().registerEvents(new UiListener(), this);
+        /*this.getServer().getScheduler().scheduleRepeatingTask(this,
+                new CheckPlayerPosTask(this), 1, true);*/
         this.getLogger().info("§a 插件加载完成！");
     }
 
@@ -65,13 +67,13 @@ public class WorldBorder extends PluginBase {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equals("boundary")) {
+        if ("worldborder".equalsIgnoreCase(command.getName())) {
             if (sender instanceof Player) {
                 Player player = ((Player) sender).getPlayer();
                 if (player.isOp()) {
                     if (args.length > 0) {
                         switch (args[0]) {
-                            case "pos1": case "点一":
+                            case "pos1":
                                 if (!this.cache.containsKey(player.getLevel())) {
                                     this.cache.put(player.getLevel(), new HashMap<>());
                                 }
@@ -79,7 +81,7 @@ public class WorldBorder extends PluginBase {
                                 this.cache.get(player.getLevel()).put("z1", player.getZ());
                                 sender.sendMessage("§a当前位置已保存为点一");
                                 break;
-                            case "pos2": case "点二":
+                            case "pos2":
                                 if (!this.cache.containsKey(player.getLevel())) {
                                     this.cache.put(player.getLevel(), new HashMap<>());
                                 }
@@ -87,7 +89,7 @@ public class WorldBorder extends PluginBase {
                                 this.cache.get(player.getLevel()).put("z2", player.getZ());
                                 sender.sendMessage("§a当前位置已保存为点二");
                                 break;
-                            case "reload": case "重载":
+                            case "reload":
                                 if (this.cache.containsKey(player.getLevel())) {
                                     HashMap<String, Double> pos = this.cache.get(player.getLevel());
                                     if (pos.get("x1") == null || pos.get("z1") == null ||
@@ -107,10 +109,10 @@ public class WorldBorder extends PluginBase {
                             default:
                                 sender.sendMessage("§e请使用以下命令圈出一个方形");
                                 sender.sendMessage("§c警告：请按顺序设置！");
-                                sender.sendMessage("§a/boundary §e打开ui界面");
-                                sender.sendMessage("/boundary pos1 设置当前位置为点一");
-                                sender.sendMessage("/boundary pos2 设置当前位置为点二");
-                                sender.sendMessage("/boundary reload 重新加载当前世界设置");
+                                sender.sendMessage("§a/worldborder §e打开ui界面");
+                                sender.sendMessage("§a/worldborder pos1 §e设置当前位置为点一");
+                                sender.sendMessage("§a/worldborder pos2 §e设置当前位置为点二");
+                                sender.sendMessage("§a/worldborder reload §e重新加载设置");
                         }
                     } else {
                         UiCreate.sendAdminMenu(player);

@@ -5,7 +5,7 @@
 常见用途：阻止玩家在主城跑图  
   
 #### 插件命令：  
-/boundary 打开ui  
-/boundary pos1 设置当前位置为点一  
-/boundary pos2 设置当前位置为点二  
-/boundary reload 重新加载(保存)当前世界设置  
+/worldborder 打开ui  
+/worldborder pos1 设置当前位置为点一  
+/worldborder pos2 设置当前位置为点二  
+/worldborder reload 重新加载(保存)当前世界设置  
