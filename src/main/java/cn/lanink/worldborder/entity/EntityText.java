@@ -74,7 +74,7 @@ public class EntityText extends Entity {
     }
 
     public void resetSurvivalTime() {
-        this.survivalTime = setSurvivalTime;
+        this.survivalTime = this.setSurvivalTime;
         if (this.isClosed()) {
             EntityText text = new EntityText(this.getChunk(), this.namedTag, this.player, 5);
             text.spawnTo(this.player);

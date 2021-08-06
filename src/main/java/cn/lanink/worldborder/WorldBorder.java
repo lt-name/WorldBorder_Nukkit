@@ -1,17 +1,22 @@
 package cn.lanink.worldborder;
 
+import cn.lanink.worldborder.border.Border;
+import cn.lanink.worldborder.border.Borders;
 import cn.lanink.worldborder.command.WorldBorderCommand;
 import cn.lanink.worldborder.entity.EntityText;
-import cn.lanink.worldborder.form.WindowListener;
+import cn.lanink.worldborder.form.FormListener;
 import cn.lanink.worldborder.listener.PlayerMoveListener;
 import cn.lanink.worldborder.listener.PlayerTeleportListener;
+import cn.lanink.worldborder.listener.SetBorderListener;
 import cn.lanink.worldborder.task.CheckPlayerPosTask;
-import cn.lanink.worldborder.utils.Border;
+import cn.lanink.worldborder.utils.Utils;
 import cn.nukkit.Player;
 import cn.nukkit.level.Level;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
+import lombok.Getter;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,12 +27,21 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WorldBorder extends PluginBase {
 
     private static WorldBorder instance;
+
     private Config config;
-    private Config borderConfig;
-    private final Map<Level, Border> borders = new ConcurrentHashMap<>();
-    private final Map<Level, Border> cacheBorder = new HashMap<>();
+
+    private final HashMap<String, Config> worldConfigCache = new HashMap<>();
+
+    @Getter
+    private final Map<String, Borders> borders = new ConcurrentHashMap<>();
 
     private final Map<Player, EntityText> entityTexts = new HashMap<>();
+
+    @Getter
+    private final ConcurrentHashMap<Player, Border> playerLastInBorder = new ConcurrentHashMap<>();
+
+    @Getter
+    private final HashMap<Player, Border> playerSet = new HashMap<>();
 
     public static WorldBorder getInstance() {
         return instance;
@@ -35,6 +49,9 @@ public class WorldBorder extends PluginBase {
 
     @Override
     public void onLoad() {
+        if (instance != null) {
+            throw new RuntimeException("重复调用 onLoad 方法！");
+        }
         instance = this;
         this.saveDefaultConfig();
     }
@@ -43,58 +60,61 @@ public class WorldBorder extends PluginBase {
     public void onEnable() {
         this.config = new Config(this.getDataFolder() + "/config.yml", Config.YAML);
 
-        this.loadBorderConfig();
-
         this.getServer().getCommandMap().register("", new WorldBorderCommand());
 
-        this.getServer().getPluginManager().registerEvents(new WindowListener(), this);
+        this.getServer().getPluginManager().registerEvents(new FormListener(), this);
+        this.getServer().getPluginManager().registerEvents(new SetBorderListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerTeleportListener(this), this);
 
         boolean cancelledMove = true;
-        if (this.config.getInt("detectionMethod", 0) == 1) {
+        if (this.config.getBoolean("启用回弹")) {
             this.getServer().getScheduler().scheduleRepeatingTask(this,
                     new CheckPlayerPosTask(this), 1, true);
             cancelledMove = false;
         }
         this.getServer().getPluginManager().registerEvents(new PlayerMoveListener(this, cancelledMove), this);
 
-        this.getLogger().info("§a 插件加载完成！");
+        Utils.checkOldConfig();
+
+        this.loadWorldConfig();
+
+        this.getLogger().info("§a插件加载完成！");
     }
 
     @Override
     public void onDisable() {
-        this.cacheBorder.clear();
         this.borders.clear();
-        this.getLogger().info("§c 插件已卸载！");
+        this.playerSet.clear();
+        this.playerLastInBorder.clear();
+        for (EntityText entityText : this.entityTexts.values()) {
+            entityText.close();
+        }
+        this.worldConfigCache.clear();
+        this.getLogger().info("§c插件已卸载！");
     }
 
-    public void loadBorderConfig() {
-        this.borderConfig = new Config(this.getDataFolder() + "/border.yml", Config.YAML);
+    public void reloadWorldConfig() {
+        this.worldConfigCache.clear();
         this.borders.clear();
+        this.loadWorldConfig();
+    }
 
-        if (!this.cacheBorder.isEmpty()) {
-            for (Border border : this.cacheBorder.values()) {
-                if (!border.isSetUp()) {
-                    continue;
+    public void loadWorldConfig() {
+        int count = 0;
+        File[] s = new File(this.getDataFolder() + "/worlds").listFiles();
+        if (s != null && s.length > 0) {
+            for (File file : s) {
+                try {
+                    String fileName = file.getName().split("\\.")[0];
+                    Config worldConfig = this.getWorldConfig(fileName);
+                    this.borders.put(fileName, new Borders(fileName, worldConfig));
+                    count++;
+                } catch (Exception e) {
+                    this.getLogger().error("加载配置 " + file.getName() + " 时出现错误！", e);
                 }
-                border.check();
-                this.borderConfig.set(border.getLevel().getFolderName(), border.getSaveMap());
             }
-            this.borderConfig.save();
         }
-
-        for (String key : this.borderConfig.getAll().keySet()) {
-            Level level = this.getServer().getLevelByName(key);
-            if (level == null) {
-                if (!this.getServer().loadLevel(key)) {
-                    this.getLogger().error(" §c" + key + " 世界不存在！");
-                    continue;
-                }
-                level = this.getServer().getLevelByName(key);
-            }
-            Border border = new Border(level, this.borderConfig.get(key, new HashMap<>()));
-            this.borders.put(level, border);
-        }
+        this.getLogger().info("世界边界配置加载完成，共加载" + count + "个世界配置文件！");
     }
 
     @Override
@@ -102,25 +122,24 @@ public class WorldBorder extends PluginBase {
         return this.config;
     }
 
-    public Config getBorderConfig() {
-        return this.borderConfig;
+    public Config getWorldConfig(Level level) {
+        return this.getWorldConfig(level.getName());
     }
 
-    public Border getCacheBorder(Level level) {
-        Border border = this.cacheBorder.get(level);
-        if (border == null) {
-            border = new Border(level);
-            this.cacheBorder.put(level, border);
+    public Config getWorldConfig(String levelName) {
+        if (!this.worldConfigCache.containsKey(levelName)) {
+            this.worldConfigCache.put(levelName,
+                    new Config(this.getDataFolder() + "/worlds/" + levelName + ".yml", Config.YAML));
         }
-        return border;
+        return this.worldConfigCache.get(levelName);
     }
 
-    public Map<Level, Border> getCacheBorder() {
-        return this.cacheBorder;
+    public Borders getBorders(Level level) {
+        return this.getBorders(level.getName());
     }
 
-    public Map<Level, Border> getBorders() {
-        return this.borders;
+    public Borders getBorders(String levelName) {
+        return this.borders.get(levelName);
     }
 
     public Map<Player, EntityText> getEntityTexts() {
