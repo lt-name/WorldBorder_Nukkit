@@ -68,7 +68,7 @@ public class FormCreate {
                     return;
                 }
             }
-            if (radius < 2) {
+            if (radius <= 2) {
                 AdvancedFormWindowModal modal = new AdvancedFormWindowModal(PLUGIN_NAME,
                         "你设置的半径太小啦！至少要大于2！",
                         "返回", "返回");
