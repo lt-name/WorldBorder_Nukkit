@@ -1,6 +1,7 @@
 package cn.lanink.worldborder.border;
 
 import cn.nukkit.level.Level;
+import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import lombok.Getter;
 import lombok.Setter;
@@ -100,8 +101,7 @@ public class Border implements Cloneable {
             return vector3.x > this.minX && vector3.x < this.maxX &&
                     vector3.z > this.minZ && vector3.z < this.maxZ;
         }else {
-            return Math.abs(vector3.x - this.minX) < this.radius &&
-                    Math.abs(vector3.z - this.minZ) < this.radius;
+            return new Vector2(this.minX, this.minZ).distance(vector3.x, vector3.z) < this.radius;
         }
     }
 

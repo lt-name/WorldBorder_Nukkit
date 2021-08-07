@@ -78,6 +78,7 @@ public class FormCreate {
                 cp.showFormWindow(modal);
                 return;
             }
+            WorldBorder.getInstance().getPlayerSet().remove(player);
             border.setRadius(radius);
             Borders borders = WorldBorder.getInstance().getBorders(border.getLevel());
             if (borders == null) {
