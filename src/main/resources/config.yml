@@ -1,1 +1,3 @@
 启用回弹: true
+#op 可以离开边界
+op-can-leave: true

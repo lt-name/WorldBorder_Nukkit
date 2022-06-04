@@ -1,5 +1,6 @@
 package cn.lanink.worldborder.border;
 
+import cn.lanink.worldborder.WorldBorder;
 import cn.nukkit.Player;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.Vector2;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;
+import java.util.WeakHashMap;
 
 /**
  * @author lt_name
@@ -114,7 +116,7 @@ public class Border implements Cloneable {
      */
     public boolean canLeave(Player player) {
         //TODO 完善这个判断
-        return player.isOp();
+        return player.isOp() && WorldBorder.getInstance().getConfig().getBoolean("op-can-leave");
     }
 
     /**
