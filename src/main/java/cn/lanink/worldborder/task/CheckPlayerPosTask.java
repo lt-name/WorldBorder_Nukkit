@@ -27,17 +27,19 @@ public class CheckPlayerPosTask extends PluginTask<WorldBorder> {
     public void onRun(int i) {
         for (Borders borders : this.getOwner().getBorders().values()) {
             for (Player player : borders.getLevel().getPlayers().values()) {
-                if (player.isOp()) {
-                    continue;
-                }
                 if (borders.isInside(player) == null) {
                     Border lastBorder = this.owner.getPlayerLastInBorder().get(player);
-                    if (lastBorder == null) {
+                    if (lastBorder != null) {
+                        //玩家最后一次在的边界允许玩家离开 不回弹
+                        if (lastBorder.canLeave(player)) {
+                            continue;
+                        }
+                    }else {
                         lastBorder = new ArrayList<>(borders.getBorders()).get(new Random().nextInt(borders.getBorders().size()));
                         playerOutsizeTime.put(player, 200);
                     }
                     int newValue = playerOutsizeTime.getOrDefault(player, 0) + 1;
-                    if (newValue > 100) {
+                    if (newValue > 100) { //在边界外活动超过100秒 直接传送到最近边界中心
                         Position position = new Position(0, 255, 0, player.getLevel());
                         if (lastBorder.getBorderType() == Border.BorderType.ROUND) {
                             position.setX(lastBorder.getMinX());

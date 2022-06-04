@@ -3,9 +3,9 @@ main: cn.lanink.worldborder.WorldBorder
 version: "1.2.1"
 api: ["1.0.0"]
 load: POSTWORLD
-author: "lt_name"
+author: "LT_Name"
 
 permissions:
   worldborder.admin:
-    description: ""
+    description: "WorldBorder插件管理员权限"
     default: op

@@ -1,5 +1,6 @@
 package cn.lanink.worldborder.border;
 
+import cn.nukkit.Player;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
@@ -85,6 +86,35 @@ public class Border implements Cloneable {
         this.maxX = Math.max(minXCache, maxXCache);
         this.minZ = Math.min(minZCache, maxZCache);
         this.maxZ = Math.max(minZCache, maxZCache);
+    }
+
+    /**
+     * 玩家是否可以通过边界
+     *
+     * @return true 可以通过 false 无法通过
+     */
+    public boolean canThrough(Player player) {
+        return this.canJoin(player) && this.canLeave(player);
+    }
+
+    /**
+     * 玩家是否可以进入边界范围内
+     *
+     * @return true 可以通过 false 无法通过
+     */
+    public boolean canJoin(Player player) {
+        //TODO 完善这个判断
+        return true;
+    }
+
+    /**
+     * 玩家是否可以离开边界范围内
+     *
+     * @return true 可以通过 false 无法通过
+     */
+    public boolean canLeave(Player player) {
+        //TODO 完善这个判断
+        return player.isOp();
     }
 
     /**

@@ -26,15 +26,20 @@ public class PlayerMoveListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (player == null || player.isOp()) {
+        if (player == null) {
             return;
         }
-        Borders borders = this.worldBorder.getBorders().get(player.getLevel().getName());
+        Borders borders = this.worldBorder.getBorders(player.getLevel().getName());
         if (borders == null) {
             return;
         }
         Border border = borders.isInside(event.getTo());
         if (border == null) {
+            border = this.worldBorder.getPlayerLastInBorder().get(player);
+            if (border != null && border.canLeave(player)) {
+                return;
+            }
+
             event.setCancelled(this.cancelled);
             player.sendTitle("", "§c前面的区域\n以后再来探索吧！", 1, 30, 10);
             EntityText entityText = this.worldBorder.getEntityTexts().get(player);
