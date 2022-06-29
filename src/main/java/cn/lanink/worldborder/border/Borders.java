@@ -70,6 +70,13 @@ public class Borders {
         border.setBorders(this);
     }
 
+    public void removeBorder(@NotNull Border border) {
+        this.borders.remove(border);
+        if (this.borders.isEmpty()) {
+            WorldBorder.getInstance().getBorders().remove(this.level.getName());
+        }
+    }
+
     public Border getBorderByName(String name) {
         for (Border border : this.borders) {
             if (border.getName().equals(name)) {

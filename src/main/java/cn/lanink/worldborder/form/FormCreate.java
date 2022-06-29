@@ -137,7 +137,7 @@ public class FormCreate {
                             "确定", "取消");
                     modal.onClickedTrue(cp2 -> {
                         Borders borders = border.getBorders();
-                        borders.getBorders().remove(border);
+                        borders.removeBorder(border);
                         borders.saveConfig();
 
                         AdvancedFormWindowModal modal2 = new AdvancedFormWindowModal(PLUGIN_NAME,

@@ -107,7 +107,11 @@ public class WorldBorder extends PluginBase {
                 try {
                     String fileName = file.getName().split("\\.")[0];
                     Config worldConfig = this.getWorldConfig(fileName);
-                    this.borders.put(fileName, new Borders(fileName, worldConfig));
+                    Borders borders = new Borders(fileName, worldConfig);
+                    if (borders.getBorders().isEmpty()) {
+                        continue;
+                    }
+                    this.borders.put(fileName, borders);
                     count++;
                 } catch (Exception e) {
                     this.getLogger().error("加载配置 " + file.getName() + " 时出现错误！", e);
