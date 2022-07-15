@@ -9,6 +9,6 @@ permissions:
   worldborder.admin:
     description: "WorldBorder插件管理员权限"
     default: op
-  worldborder.leave:
+  worldborder.leave.*:
     description: "WorldBorder离开边界权限"
     default: false
