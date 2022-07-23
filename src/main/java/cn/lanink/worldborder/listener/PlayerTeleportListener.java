@@ -19,7 +19,7 @@ public class PlayerTeleportListener implements Listener {
         this.worldBorder = worldBorder;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         Level level = event.getTo().getLevel();
         if (level != null && !event.getPlayer().isOp()) {

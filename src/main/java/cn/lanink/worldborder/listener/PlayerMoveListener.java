@@ -23,7 +23,7 @@ public class PlayerMoveListener implements Listener {
         this.cancelled = cancelled;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (player == null) {
