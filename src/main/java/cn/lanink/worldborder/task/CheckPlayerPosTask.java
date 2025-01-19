@@ -39,7 +39,7 @@ public class CheckPlayerPosTask extends PluginTask<WorldBorder> {
                         playerOutsizeTime.put(player, 200);
                     }
                     int newValue = playerOutsizeTime.getOrDefault(player, 0) + 1;
-                    if (newValue > 100) { //在边界外活动超过100秒 直接传送到最近边界中心
+                    if (newValue > 100) { //在边界外活动超过100tick 直接传送到最近边界中心
                         Position position = new Position(0, 255, 0, player.getLevel());
                         if (lastBorder.getBorderType() == Border.BorderType.ROUND) {
                             position.setX(lastBorder.getMinX());

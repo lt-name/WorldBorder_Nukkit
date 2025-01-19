@@ -4,6 +4,7 @@ import cn.lanink.worldborder.WorldBorder;
 import cn.nukkit.Server;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.Vector3;
+import cn.nukkit.permission.Permission;
 import cn.nukkit.utils.Config;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +40,9 @@ public class Borders {
                 border.setRadius((Double) map.get("radius"));
             }
             this.addBorder(border);
+            // 设置默认权限
+            Permission permission = new Permission("worldborder.leave." + name, "离开" + name + "边界权限", Permission.DEFAULT_FALSE);
+            Server.getInstance().getPluginManager().addPermission(permission);
         }
     }
 

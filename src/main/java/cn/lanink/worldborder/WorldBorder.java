@@ -102,7 +102,7 @@ public class WorldBorder extends PluginBase {
     public void loadWorldConfig() {
         int count = 0;
         File[] s = new File(this.getDataFolder() + "/worlds").listFiles();
-        if (s != null && s.length > 0) {
+        if (s != null) {
             for (File file : s) {
                 try {
                     String fileName = file.getName().split("\\.")[0];

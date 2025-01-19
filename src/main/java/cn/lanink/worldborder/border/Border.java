@@ -115,9 +115,10 @@ public class Border implements Cloneable {
      * @return true 可以通过 false 无法通过
      */
     public boolean canLeave(Player player) {
-        //TODO 完善这个判断
-        return player.isOp() && WorldBorder.getInstance().getConfig().getBoolean("op-can-leave") ||
-                player.hasPermission("worldborder.leave." + this.getName());
+        if (player.isOp() && WorldBorder.getInstance().getConfig().getBoolean("op-can-join")) {
+            return true;
+        }
+        return player.hasPermission("worldborder.leave." + this.getName());
     }
 
     /**
